@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Map from './components/Map.vue'
+import BMap from './components/BMap.vue'
 </script>
 
 <template>
-  <Map></Map>
+  <BMap/>
 </template>
 
 <style>
