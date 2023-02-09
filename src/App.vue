@@ -1,10 +1,9 @@
-<script setup lang="ts">
-import BMap from './components/BMap.vue'
-</script>
-
 <template>
-  <BMap/>
+    <router-view />
 </template>
 
-<style>
+<script setup lang="ts">
+</script>
+
+<style scoped="scoped">
 </style>
