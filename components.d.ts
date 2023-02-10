@@ -7,14 +7,26 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    BMap: typeof import('./src/components/BMap.vue')['default']
-    HomePage: typeof import('./src/components/HomePage.vue')['default']
+    BMap: typeof import('./src/components/Home/BMap.vue')['default']
+    HomeMenu: typeof import('./src/components/Home/HomeMenu.vue')['default']
+    HomePage: typeof import('./src/components/Home/HomePage.vue')['default']
     Login: typeof import('./src/components/Login.vue')['default']
+    MyInfo: typeof import('./src/components/Home/MyInfo.vue')['default']
+    MyPhoto: typeof import('./src/components/Home/MyPhoto.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     VanButton: typeof import('vant/es')['Button']
     VanCellGroup: typeof import('vant/es')['CellGroup']
     VanField: typeof import('vant/es')['Field']
     VanForm: typeof import('vant/es')['Form']
+    VanIcon: typeof import('vant/es')['Icon']
+    VanImage: typeof import('vant/es')['Image']
+    VanPopup: typeof import('vant/es')['Popup']
+    VanSidebar: typeof import('vant/es')['Sidebar']
+    VanSidebarItem: typeof import('vant/es')['SidebarItem']
+    VanSticky: typeof import('vant/es')['Sticky']
+    VanTabbar: typeof import('vant/es')['Tabbar']
+    VanTabbarItem: typeof import('vant/es')['TabbarItem']
+    VanUploader: typeof import('vant/es')['Uploader']
   }
 }

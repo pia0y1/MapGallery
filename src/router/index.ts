@@ -7,9 +7,22 @@ export default createRouter({
     name: "Login",
     component: () => import("../components/Login.vue")
   }, {
-    path: "/bMap",
-    name: "BMap",
-    component: () => import("../components/BMap.vue")
+    path: "/homePage",
+    name: "HomePage",
+    component: () => import("../components/Home/HomePage.vue"),
+    children: [{
+      path: "bMap",
+      name: "BMap",
+      component: () => import("../components/Home/BMap.vue")
+    }, {
+      path: "myPhoto",
+      name: "MyPhoto",
+      component: () => import("../components/Home/MyPhoto.vue")
+    }, {
+      path: "myInfo",
+      name: "MyInfo",
+      component: () => import("../components/Home/MyInfo.vue")
+    }]
   }]
 });
 

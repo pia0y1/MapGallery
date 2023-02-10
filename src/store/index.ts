@@ -1,17 +1,27 @@
-import { defineStore } from "pinia";
+import { defineStore } from "pinia"
 
-export const mainStore = defineStore("main", {
+export const useUserStore = defineStore("user", {
+  // 持久化
+  persist: {
+    enabled: true,
+    strategies: [{
+      // 未设置则默认储存在sessionStorage里，可改为localStorage
+      storage: localStorage
+    }]
+  },
   state: () => {
     return {
-      isLogin: false,
-      username: ""
+      username: "",
+      isLogin: false
     }
   },
+  // computed：修饰一些值
   getters: {},
+  // methods：同步异步都能做，提交state
   actions: {
-    setLoginSuccess(username: string) {
-      this.isLogin = true
+    setLoginState(username: string) {
       this.username = username
+      this.isLogin = true
     }
   }
 })
