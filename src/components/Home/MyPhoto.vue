@@ -3,7 +3,6 @@
     <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
       <van-cell v-for="item in list" :key="item">
         <h2>{{ item }}</h2>
-        <!-- <van-cell v-for="item in list" :key="item" :title="item"> -->
         <van-grid square :gutter="10" clickable>
           <van-grid-item v-for="value in 5" :key="value" icon="photo-o" text="文字" />
         </van-grid>
@@ -41,7 +40,6 @@ const onLoad = () => {
 const onRefresh = () => {
   // 清空列表数据
   finished.value = false;
-
   // 重新加载数据
   // 将 loading 设置为 true，表示处于加载状态
   loading.value = true;
@@ -91,5 +89,4 @@ h2 {
 .van-cell {
   padding: 0;
 }
-
 </style>
