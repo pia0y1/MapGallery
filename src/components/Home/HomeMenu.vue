@@ -5,9 +5,9 @@
   </div> -->
   <div id="homeView">
     <!-- <router-view /> -->
-    <BMap v-show="pageIndex == 0"></BMap>
-    <MyImage v-show="pageIndex == 1"></MyImage>
-    <MyInfo v-show="pageIndex == 2"></MyInfo>
+    <BMap v-show="pageIndex == 0"/>
+    <MyImage v-show="pageIndex == 1"/>
+    <MyInfo v-show="pageIndex == 2"/>
   </div>
   <van-tabbar active-color="#2ce991" route id="tabBar">
     <van-tabbar-item @click="pageIndex = 0" to="/homePage/bMap" icon="location-o">地图</van-tabbar-item>
@@ -20,8 +20,8 @@
 import BMap from './BMap.vue'
 import MyImage from './MyImage.vue';
 import MyInfo from './MyInfo.vue';
-import { ref, onUpdated } from 'vue';
-const pageIndex = ref(0);
+import { ref,onUpdated } from 'vue';
+let pageIndex = ref(0);
 
 // onUpdated(()=>{
 //   console.log(pageIndex.value);

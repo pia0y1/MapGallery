@@ -1,8 +1,18 @@
 :root:root {
+  /* 主色调 */
   --van-white: #ffffff;
   --van-green: #2ce991;
   --van-black: #111111;
+
+  /* 分割线 */
+  --van-divider-margin: 8px;
+  --van-divider-line-height: 16px;
+
+  /* 宫格 */
+  --van-grid-item-content-padding: 0;
+
+  /* 组件色调 */
   --van-button-primary-color: var(--van-green);
   --van-button-primary-background: var(--van-white);
-  --van-sidebar-selected-border-color:	var(--van-green)
+  --van-sidebar-selected-border-color: var(--van-green);
 }
