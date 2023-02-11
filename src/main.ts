@@ -21,7 +21,7 @@ app.use(Uploader);
 
 const user = useUserStore()
 router.beforeEach((to, from, next) => {
-  if (to.path === '/login' || to.path === '/') {
+  if (to.path === "/login" || to.path === "/") {
     next();
   }
   else {

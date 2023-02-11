@@ -4,19 +4,28 @@
       src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" />
   </div> -->
   <div id="homeView">
-    <router-view />
+    <!-- <router-view /> -->
+    <BMap v-show="pageIndex == 0"></BMap>
+    <MyImage v-show="pageIndex == 1"></MyImage>
+    <MyInfo v-show="pageIndex == 2"></MyInfo>
   </div>
-  <van-tabbar route v-model="active" id="tabBar">
-    <van-tabbar-item to="/homePage/bMap" icon="location-o">地图</van-tabbar-item>
-    <van-tabbar-item to="/homePage/myPhoto" icon="photo-o">照片</van-tabbar-item>
-    <van-tabbar-item to="/homePage/myInfo" icon="contact">我的</van-tabbar-item>
+  <van-tabbar active-color="#2ce991" route id="tabBar">
+    <van-tabbar-item @click="pageIndex = 0" to="/homePage/bMap" icon="location-o">地图</van-tabbar-item>
+    <van-tabbar-item @click="pageIndex = 1" to="/homePage/myImage" icon="photo-o">照片</van-tabbar-item>
+    <van-tabbar-item @click="pageIndex = 2" to="/homePage/myInfo" icon="contact">我的</van-tabbar-item>
   </van-tabbar>
 </template>
 
 <script setup lang="ts">
 import BMap from './BMap.vue'
-import { ref } from 'vue';
-const active = ref(0);
+import MyImage from './MyImage.vue';
+import MyInfo from './MyInfo.vue';
+import { ref, onUpdated } from 'vue';
+const pageIndex = ref(0);
+
+// onUpdated(()=>{
+//   console.log(pageIndex.value);
+// })
 </script>
 
 <style>
@@ -30,10 +39,10 @@ const active = ref(0);
   z-index: 1;
 } */
 #homeView {
-  height: 95%;
+  height: 92%;
 }
 
 #tabBar {
-  height: 5%;
+  height: 8%;
 }
 </style>

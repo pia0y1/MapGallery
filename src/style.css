@@ -2,7 +2,7 @@
   --van-white: #ffffff;
   --van-green: #2ce991;
   --van-black: #111111;
-  --van-button-primary-color: var(--van-black);
+  --van-button-primary-color: var(--van-green);
   --van-button-primary-background: var(--van-white);
   --van-sidebar-selected-border-color:	var(--van-green)
 }

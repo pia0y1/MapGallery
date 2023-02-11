@@ -3,12 +3,9 @@
     <van-cell-group inset>
       <van-field v-model="username" name="username" label="用户名" placeholder="用户名" />
       <van-field v-model="password" type="password" name="password" label="密码" placeholder="密码" autocomplete="off" />
+      <van-button block size="small" plain>注册</van-button>
+      <van-button block size="small" color="#2ce991" native-type="submit">登录</van-button>
     </van-cell-group>
-    <div style="margin: 16px;">
-      <van-button round block type="primary" native-type="submit">
-        登录
-      </van-button>
-    </div>
   </van-form>
 </template>
 
@@ -53,5 +50,10 @@ form {
   margin-top: 40%;
   margin-left: 50%;
   transform: translate(-50%, 0);
+}
+
+.btns {
+  margin-left: 16px;
+  margin-right: 16px;
 }
 </style>
