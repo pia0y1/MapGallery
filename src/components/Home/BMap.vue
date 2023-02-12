@@ -1,11 +1,12 @@
 <template>
-  <div id="map"></div>
+  <div id="map"/>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from "vue"
 
-const BMap = (window as any).BMap
+let BMap = (window as any).BMap
+
 onMounted(() => {
   var map = new BMap.Map("map", { coordsType: 5 })
   // var point = new BMap.Point(props.longitude, props.latitude)

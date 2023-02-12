@@ -1,13 +1,15 @@
 <template>
-  <!-- <div class="headImage">
-    <van-image round width="5rem" height="5rem" fit="cover"
-      src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" />
-  </div> -->
-  <div id="homeView">
+  <div style="height: 92%;">
     <!-- <router-view /> -->
-    <BMap v-show="pageIndex == 0"/>
-    <MyImage v-show="pageIndex == 1"/>
-    <MyInfo v-show="pageIndex == 2"/>
+    <div id="home-view" v-show="pageIndex == 0">
+      <BMap />
+    </div>
+    <div id="home-view" v-show="pageIndex == 1">
+      <MyImage />
+    </div>
+    <div id="home-view" v-show="pageIndex == 2">
+      <MyInfo />
+    </div>
   </div>
   <van-tabbar active-color="#2ce991" route id="tabBar">
     <van-tabbar-item @click="pageIndex = 0" to="/homePage/bMap" icon="location-o">地图</van-tabbar-item>
@@ -20,7 +22,7 @@
 import BMap from './BMap.vue'
 import MyImage from './MyImage.vue';
 import MyInfo from './MyInfo.vue';
-import { ref,onUpdated } from 'vue';
+import { ref, onUpdated } from 'vue';
 let pageIndex = ref(0);
 
 // onUpdated(()=>{
@@ -29,17 +31,8 @@ let pageIndex = ref(0);
 </script>
 
 <style>
-/* .headImage {
-  width: 80px;
-  height: 80px;
-  background-color: transparent;
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 1;
-} */
-#homeView {
-  height: 92%;
+#home-view {
+  height: 100%;
 }
 
 #tabBar {

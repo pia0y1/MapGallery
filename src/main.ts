@@ -6,6 +6,7 @@ import { Uploader } from 'vant';
 import { createPinia } from "pinia"
 import { useUserStore } from "./store"
 import piniaPluginPersist from "pinia-plugin-persist"
+
 // import 'default-passive-events' // 解决控制台警告 [Violation] Added non-passive event listener to a scroll-blocking 'mousewheel' event. Consider marking event handler as 'passive' to make the page more responsive. See https://www.chromestatus.com/feature/5745543795965952
 import './style.css'
 
@@ -17,7 +18,7 @@ store.use(piniaPluginPersist)
 app.use(router)
 app.use(store)
 app.use(Lazyload)
-app.use(Uploader);
+app.use(Uploader)
 
 const user = useUserStore()
 router.beforeEach((to, from, next) => {

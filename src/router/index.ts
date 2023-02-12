@@ -13,7 +13,7 @@ export default createRouter({
   }, {
     path: "/homePage",
     name: "HomePage",
-    component: () => import("../components/Home/HomePage.vue"),
+    component: () => import("../components/Home/HomeMenu.vue"),
     children: [{
       path: "bMap",
       name: "BMap",

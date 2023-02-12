@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BMap: typeof import('./src/components/Home/BMap.vue')['default']
+    Gallery: typeof import('./src/components/Home/Gallery.vue')['default']
     HomeMenu: typeof import('./src/components/Home/HomeMenu.vue')['default']
     HomePage: typeof import('./src/components/Home/HomePage.vue')['default']
     Login: typeof import('./src/components/Login.vue')['default']
@@ -26,6 +27,7 @@ declare module '@vue/runtime-core' {
     VanGridItem: typeof import('vant/es')['GridItem']
     VanIcon: typeof import('vant/es')['Icon']
     VanImage: typeof import('vant/es')['Image']
+    VanImagePreview: typeof import('vant/es')['ImagePreview']
     VanList: typeof import('vant/es')['List']
     VanLoading: typeof import('vant/es')['Loading']
     VanPopup: typeof import('vant/es')['Popup']

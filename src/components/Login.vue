@@ -46,14 +46,9 @@ const onSubmit = () => {
 
 <style scoped>
 form {
-  position: fixed;
+  /* position: fixed; */
   margin-top: 40%;
   margin-left: 50%;
   transform: translate(-50%, 0);
-}
-
-.btns {
-  margin-left: 16px;
-  margin-right: 16px;
 }
 </style>
