@@ -1,17 +1,17 @@
 <template>
-  <div style="height: 92%;">
+  <div class="home-view">
     <!-- <router-view /> -->
-    <div id="home-view" v-show="pageIndex == 0">
+    <div class="view" v-show="pageIndex == 0">
       <BMap />
     </div>
-    <div id="home-view" v-show="pageIndex == 1">
+    <div class="view" v-show="pageIndex == 1">
       <MyImage />
     </div>
-    <div id="home-view" v-show="pageIndex == 2">
+    <div class="view" v-show="pageIndex == 2">
       <MyInfo />
     </div>
   </div>
-  <van-tabbar active-color="#2ce991" route id="tabBar">
+  <van-tabbar active-color="#2ce991" route class="tabBar">
     <van-tabbar-item @click="pageIndex = 0" to="/homePage/bMap" icon="location-o">地图</van-tabbar-item>
     <van-tabbar-item @click="pageIndex = 1" to="/homePage/myImage" icon="photo-o">照片</van-tabbar-item>
     <van-tabbar-item @click="pageIndex = 2" to="/homePage/myInfo" icon="contact">我的</van-tabbar-item>
@@ -31,11 +31,15 @@ let pageIndex = ref(0);
 </script>
 
 <style>
-#home-view {
+.home-view {
+  height: 92%;
+}
+
+.view {
   height: 100%;
 }
 
-#tabBar {
+.tabBar {
   height: 8%;
 }
 </style>
