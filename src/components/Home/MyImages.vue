@@ -5,8 +5,7 @@
         {{ dateFilter.getTimeWithoutSpace(rows.sd, "zh-CNYYYYMMDD") }}
       </van-divider>
       <van-grid square :border="false" :gutter="4" clickable>
-        <van-grid-item v-for="(img, j) in rows.imgs" :key="j"
-          @click="showImage(concatImagePath(user.username, img.fn))">
+        <van-grid-item v-for="(img, j) in rows.imgs" :key="j" @click="showImage(concatImagePath(user.username, img.fn))">
           <van-image width="100%" height="100%" fit="cover" lazy-load :src="concatImagePath(user.username, img.fn)">
             <template v-slot:loading><van-loading type="spinner" size="20" /></template>
           </van-image>
@@ -20,13 +19,15 @@
 
   <van-back-top class="custom" />
 
-  <div class="mask" v-show="show">
-    <div class="mask-popup">
-      <UploadImage />
-      <van-button class="mask-popup-btn" square block size="normal" color="#ff6034" @click="show = false">取消</van-button>
+  <Transition name="upload-mask">
+    <div class="mask" v-show="show">
+      <div class="mask-popup">
+        <UploadImage />
+        <van-button class="mask-popup-btn" square block size="normal" color="#ff6034"
+          @click="show = false">取消</van-button>
+      </div>
     </div>
-  </div>
-
+  </Transition>
 </template>
 
 <script setup lang="ts">
@@ -98,6 +99,16 @@ const showImage = (filePath: string) => {
   height: 100%;
 }
 
+.upload-mask-enter-active,
+.upload-mask-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.upload-mask-enter-from,
+.upload-mask-leave-to {
+  opacity: 0;
+}
+
 .mask {
   position: fixed;
   top: 0;
@@ -105,18 +116,20 @@ const showImage = (filePath: string) => {
   height: 100%;
   background-color: rgba(0, 0, 0, .4);
   z-index: 1;
-  transition: 1s;
 }
-.mask-popup{
+
+.mask-popup {
   position: relative;
   top: 8%;
   width: 80%;
   margin: auto;
 }
-.mask-popup-btn{
+
+.mask-popup-btn {
   margin-top: 6px;
   width: 100%;
   border: 0;
   border-radius: var(--van-cell-group-inset-radius);
 }
+
 </style>

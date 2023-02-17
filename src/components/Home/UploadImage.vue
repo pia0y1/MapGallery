@@ -7,24 +7,29 @@
         </template>
       </van-field>
       <van-field v-model="t" name="t" label="标题" placeholder="请输入标题" :rules="[{ required: true, message: '输入照片标题' }]" />
-      <van-field v-model="sl" is-link readonly name="sl" label="城市" placeholder="点击选择城市" @click="showArea = !showArea" />
+      <van-field v-model="sl" is-link readonly name="sl" label="城市" placeholder="点击选择城市"
+        @click="showArea = !showArea, showMap = false" />
       <van-field v-model="sc" is-link readonly name="sc" label="位置" placeholder="点击地图选择位置"
-        @click="showMap = !showMap" />
+        @click="showMap = !showMap, showArea = false" />
     </van-cell-group>
-    <div class="map-view-container" v-if="showMap">
-      <MapView />
-    </div>
+    <Transition name="map-view">
+      <div class="map-view-container" v-if="showMap">
+        <MapView />
+      </div>
+    </Transition>
     <van-button class="mask-popup-btn" square block size="normal" color="#2ce991" native-type="submit">上传</van-button>
   </van-form>
 
   <!-- 地区选择框 -->
-  <van-popup v-model:show="showArea" position="bottom" teleport=".view">
-    <van-area :area-list="areaList" @confirm="onConfirmLocation" @cancel="showArea = false" />
-  </van-popup>
+  <Transition name="area-popup">
+    <div class="area-popup" v-show="showArea">
+      <van-area :area-list="areaList" @confirm="onConfirmLocation" @cancel="showArea = false" />
+    </div>
+  </Transition>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUpdate, onUpdated } from "vue"
+import { ref } from "vue"
 import MapView from "./MapView.vue";
 import { areaList } from '@vant/area-data';
 import { useUserStore } from "../../store"
@@ -107,8 +112,43 @@ const onConfirmLocation = ({ selectedOptions }: any) => {
   overflow: hidden;
 }
 
+.map-view-enter-from,
+.map-view-leave-to {
+  transform: translateY(100px);
+  opacity: 0;
+}
+
+.map-view-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.map-view-leave-active {
+  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
 .upload-form-cell-group {
   border-radius: var(--van-cell-group-inset-radius);
   overflow: hidden;
+}
+
+.area-popup {
+  position: fixed;
+  bottom: 8%;
+  width: 100%;
+  left: 0;
+  transition: all 1s;
+}
+
+.area-popup-enter-from,
+.area-popup-leave-to {
+  opacity: 0;
+}
+
+.area-popup-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.area-popup-leave-active {
+  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
 }
 </style>
