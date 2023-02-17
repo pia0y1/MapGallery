@@ -15,13 +15,13 @@ export default createRouter({
     name: "HomePage",
     component: () => import("../components/Home/HomeMenu.vue"),
     children: [{
-      path: "bMap",
-      name: "BMap",
-      component: () => import("../components/Home/BMap.vue")
+      path: "map",
+      name: "Map",
+      component: () => import("../components/Home/Map.vue")
     }, {
-      path: "myImage",
-      name: "MyImage",
-      component: () => import("../components/Home/MyImage.vue")
+      path: "myImages",
+      name: "MyImages",
+      component: () => import("../components/Home/MyImages.vue")
     }, {
       path: "myInfo",
       name: "MyInfo",

@@ -3,12 +3,15 @@ import { createApp } from 'vue'
 import router from "./router"
 import { Lazyload } from 'vant';
 import { Uploader } from 'vant';
-import { createPinia } from "pinia"
 import { useUserStore } from "./store"
+import { createPinia } from "pinia"
 import piniaPluginPersist from "pinia-plugin-persist"
 
-// import 'default-passive-events' // 解决控制台警告 [Violation] Added non-passive event listener to a scroll-blocking 'mousewheel' event. Consider marking event handler as 'passive' to make the page more responsive. See https://www.chromestatus.com/feature/5745543795965952
+// import "default-passive-events"
+
 import './style.css'
+import 'vant/es/toast/style';
+import 'vant/es/image-preview/style';
 
 const app = createApp(App)
 

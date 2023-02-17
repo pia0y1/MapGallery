@@ -1,5 +1,5 @@
 <template>
-  <van-form @submit="onSubmit" label-width="5em">
+  <van-form class="login-form" @submit="onSubmit" label-width="5em">
     <van-cell-group inset>
       <van-field v-model="username" name="username" label="用户名" placeholder="用户名" />
       <van-field v-model="password" type="password" name="password" label="密码" placeholder="密码" autocomplete="off" />
@@ -32,11 +32,8 @@ const onSubmit = () => {
      * 5. user.setLoginState(username.value)
      */
     user.setLoginState(username.value)
-    // const script = document.createElement('script')
-    // script.src = "https://api.map.baidu.com/api?v=3.0&ak=jbgDtTAOZnma2xgz61HKD2kP7KwIc2kG"
-    // document.head.appendChild(script)
     setTimeout(() => {
-      router.push("/homePage/bMap")
+      router.push("/homePage/map")
     }, 800)
   } else {
     showFailToast('登录失败');
@@ -45,10 +42,10 @@ const onSubmit = () => {
 </script>
 
 <style scoped>
-form {
-  /* position: fixed; */
-  margin-top: 40%;
-  margin-left: 50%;
-  transform: translate(-50%, 0);
+.login-form {
+  position: relative;
+  width: 300px;
+  margin: auto;
+  top: 200px;
 }
 </style>
