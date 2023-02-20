@@ -1,23 +1,39 @@
 <template>
   <van-pull-refresh v-model="loading" @refresh="onRefresh">
     <van-empty v-show="isEmpty" description="您的相册空空如也~" />
-    <div v-for="(rows, i) in jsonData" :key="i">
-      <van-divider content-position="left" :style="{ color: '#111', borderColor: '#2ce991' }">
-        {{ dateFilter.getTimeWithoutSpace(rows.sd, "zh-CNYYYYMMDD") }}
-      </van-divider>
-      <van-grid square :border="false" :gutter="4" clickable>
-        <van-grid-item v-for="(img, j) in rows.imgs" :key="j" @click="showImage(concatImagePath(user.username, img.fn))">
-          <van-image width="100%" height="100%" fit="cover" lazy-load :src="concatImagePath(user.username, img.fn)">
-            <template v-slot:loading><van-loading type="spinner" size="20" /></template>
-          </van-image>
-          <div v-if="showCheckbox"><input type="checkbox" v-model="checked" /></div>
-        </van-grid-item>
-      </van-grid>
-    </div>
+    <van-checkbox-group v-model="checked">
+      <div v-for="(rows, i) in jsonData" :key="i">
+        <div class="images-date">
+          {{ dateFilter.getTimeWithoutSpace(rows.sd, "zh-CNYYYYMMDD") }}
+        </div>
+        <van-grid square :border="false" :gutter="4" clickable>
+          <van-grid-item v-for="(img, j) in rows.imgs" :key="j"
+            @click="showImage(concatImagePath(user.username, img.fn))">
+            <van-image width="100%" height="100%" fit="cover" lazy-load :src="concatImagePath(user.username, img.fn)">
+              <template v-slot:loading>
+                <van-loading type="spinner" size="20" />
+              </template>
+              <van-checkbox @click="handleClickCheckbox" v-show="showCheckBox" :name="`${img.fn}`" class="van-checkbox"
+                checked-color="#2ce991" />
+            </van-image>
+          </van-grid-item>
+        </van-grid>
+      </div>
+    </van-checkbox-group>
+
   </van-pull-refresh>
-  <van-button @click="show = true" class="btnUpload" square block color="linear-gradient(to right, #59EF94, #66FF99)">
-    上传图片
-  </van-button>
+
+  <div class="btn-group">
+    <button @click="deleteImages()" class="btn-group-delete" square block
+      color="linear-gradient(to right, #59EF94, #66FF99)">
+      删除
+    </button>
+    <button @click="show = true" class="btn-group-upload" square block
+      color="linear-gradient(to right, #59EF94, #66FF99)">
+      上传
+    </button>
+  </div>
+
 
   <van-back-top class="custom" />
 
@@ -36,20 +52,25 @@
 import { ref, onMounted } from "vue"
 import UploadImage from "./UploadImage.vue"
 import axios from "axios"
-import { showImagePreview, showToast } from 'vant';
+import { showConfirmDialog, showImagePreview, showToast } from 'vant';
 import { useUserStore } from "../../store"
 import dateFilter from "../../utils/date";
+import 'vant/es/dialog/style';
 
 const isEmpty = ref(false)
 let jsonData = ref<any>([]) // json文件里的原始数据
 let imagesList = ref<any>([]) // json文件数据展开得到的所有照片信息
 const user = useUserStore()
-const loading = ref(false);
+const loading = ref(false)
 const show = ref(false)
 
-const showCheckbox=ref(false)
-const checked = ref(false)
+const showCheckBox = ref(false)
+const checked = ref([])
 
+// 阻止事件冒泡
+const handleClickCheckbox = (e: Event) => {
+  e.stopPropagation();
+}
 
 // 组件挂载完毕自动获取用户名json文件
 onMounted(() => {
@@ -100,6 +121,30 @@ const getImages = () => {
   })
 }
 
+/**
+ * 要删除的东西有：
+ * 1. 原始图片
+ * 2. 缩略图
+ * 3. json文件对应的图片
+ */
+const deleteImages = () => {
+  if (checked.value.length === 0) showCheckBox.value = !showCheckBox.value
+  else {
+    showConfirmDialog({
+      title: "确认删除？"
+    })
+      .then(() => {
+        // on confirm
+        console.log(checked.value)
+        axios.post("http://192.168.31.250:3000/delete")
+      })
+      .catch(() => {
+        // on cancel
+        checked.value = []
+      });
+  }
+}
+
 </script>
 
 <style>
@@ -108,16 +153,48 @@ const getImages = () => {
   padding-bottom: 50%;
 }
 
-.btnUpload {
-  position: fixed;
-  bottom: 8%;
+.images-date {
+  line-height: 20px;
+  padding-left: 5%;
+  font: italic 1em serif;
+  margin-top: 10px;
+  width: 40%;
 }
 
-.wrapper {
+.van-checkbox {
+  display: block;
+  float: right;
+  position: relative;
+  top: -20px;
+}
+
+.van-checkbox__icon {
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.4)
+}
+
+.btn-group {
+  color: #fff;
+  width: 100%;
+  height: var(--van-button-default-height);
+  position: fixed;
+  bottom: 8%;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+  flex-flow: row nowrap;
+  align-content: flex-end;
+}
+
+.btn-group-delete {
+  border: none;
+  flex-grow: 1;
+  background-color: rgb(255, 109, 52);
+}
+
+.btn-group-upload {
+  border: none;
+  flex-grow: 1;
+  background-color: #2ce991;
 }
 
 .custom {
