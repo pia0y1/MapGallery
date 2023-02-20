@@ -21,12 +21,8 @@
 import Map from './Map.vue'
 import MyImage from './MyImages.vue';
 import MyInfo from './MyInfo.vue';
-import { ref, onUpdated } from 'vue';
+import { ref } from 'vue';
 let pageIndex = ref(0);
-
-// onUpdated(()=>{
-//   console.log(pageIndex.value);
-// })
 </script>
 
 <style>

@@ -7,8 +7,6 @@ import { useUserStore } from "./store"
 import { createPinia } from "pinia"
 import piniaPluginPersist from "pinia-plugin-persist"
 
-// import "default-passive-events"
-
 import './style.css'
 import 'vant/es/toast/style';
 import 'vant/es/image-preview/style';

@@ -10,6 +10,12 @@ const dateFilter = {
       const month = vstr.slice(4, 6)
       const date = vstr.slice(6, 8)
       return `${year}年${month}月${date}日`
+    } else if (value.toString().length == 6) { // 长度为6位，形如20220701
+      const vstr = value.toString()
+      const Hour = vstr.slice(0, 2)
+      const minute = vstr.slice(2, 4)
+      const second = vstr.slice(4, 6)
+      return `${Hour}时${minute}分${second}秒`
     }
     const v = new Date(value)
     // 小时大写HH表示为24小时制，hh为12小时制

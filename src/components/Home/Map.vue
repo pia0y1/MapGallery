@@ -3,14 +3,21 @@
 </template>
 
 <script setup lang="ts">
+import axios from "axios";
 import { ref, onMounted } from "vue"
+import { useUserStore } from "../../store"
+import dateFilter from "../../utils/date"
 
+const user = useUserStore()
+let jsonData = ref<any>([]) // json文件里的原始数据
+let imagesList = ref<any>([]) // json文件数据展开得到的所有照片信息
+let myMap = ref()
+
+const BMapGL = (window as any).BMapGL
 onMounted(() => {
-  const BMapGL = (window as any).BMapGL
-
   var map = new BMapGL.Map("map")          // 创建地图实例
-  var point = new BMapGL.Point(116.404, 39.915)  // 创建点坐标
-  map.centerAndZoom(point, 15)                 // 初始化地图，设置中心点坐标和地图级别
+  var point = new BMapGL.Point(105.40385, 36.34488)  // 创建点坐标
+  map.centerAndZoom(point, 5)                 // 初始化地图，设置中心点坐标和地图级别
   map.enableScrollWheelZoom(true)     //开启鼠标滚轮缩放
   map.addControl(new BMapGL.ScaleControl()) // 添加比例尺控件
   map.addControl(new BMapGL.ZoomControl()) // 添加缩放控件
@@ -18,46 +25,61 @@ onMounted(() => {
   map.addControl(new BMapGL.LocationControl()) // 添加定位控件
   map.addControl(new BMapGL.MapTypeControl()) // 添加地图类型控件
 
-
-  // var geolocation = new BMapGL.Geolocation()
-  // // 开启SDK辅助定位
-  // geolocation.enableSDKLocation()
-  // geolocation.getCurrentPosition((r: any) => {
-  //   if (geolocation.getStatus() == 0) { // window.BMAP_STATUS_SUCCESS=0
-  //     var mk = new BMapGL.Marker(r.point) // 红色定位标志
-  //     map.addOverlay(mk) // 添加到地图上
-  //     map.panTo(r.point) // 以该点为中心移动地图
-  //     alert('您的位置：' + r.point.lng + ',' + r.point.lat)
-
-  //     //GPS坐标
-  //     let x = r.point.lng
-  //     let y = r.point.lat
-  //     var ggPoint = new BMapGL.Point(x, y) // 获取到的定位坐标（未转换）
-  //     //添加gps marker和label
-  //     var markergg = new BMapGL.Marker(ggPoint) // 往地图上添加点标注
-  //     map.addOverlay(markergg) //添加GPS marker
-  //     var labelgg = new BMapGL.Label("未转换的GPS坐标（错误）", { offset: new BMapGL.Size(20, -10) })
-  //     markergg.setLabel(labelgg) //添加GPS labe
-  //     setTimeout(function () {
-  //       var convertor = new BMapGL.Convertor() // 开始转换
-  //       var pointArr = [] // 用于储存未转换的坐标
-  //       pointArr.push(ggPoint) // 存入
-  //       convertor.translate(pointArr, 1, 5, (data: any) => { // 开始转换
-  //         if (data.status === 0) { // 判断转换状态
-  //           var marker = new BMapGL.Marker(data.points[0]) // 获取转换后坐标数组的第一个制作红色定位标志
-  //           map.addOverlay(marker) // 添加到地图上
-  //           var label = new BMapGL.Label("转换后的百度坐标（正确）", { offset: new BMapGL.Size(20, -10) })
-  //           marker.setLabel(label) //添加百度label
-  //           map.setCenter(data.points[0])
-  //         }
-  //       }) // 开始转换
-  //     }, 1000)
-  //   }
-  //   else {
-  //     alert('failed' + geolocation.getStatus())
-  //   }
-  // })
+  myMap.value = map
+  setImagesMarker()
 })
+
+const setImagesMarker = () => {
+  axios.get(`/imageInfo/${user.username}.json`).then(res => {
+    jsonData.value = res.data
+    for (let i in jsonData.value) {
+      for (let j in jsonData.value[i].imgs) {
+        let img = jsonData.value[i].imgs[j]
+        img.fn = concatImagePath(user.username, img.fn)
+        imagesList.value.push(img)
+      }
+    }
+  }).then(() => {
+    for (let i = 0; i < imagesList.value.length; i++) {
+      const c = imagesList.value[i].sc
+      const arr = c.split(",")
+      const cx = Number(arr[0])
+      const cy = Number(arr[1])
+
+      const point = new BMapGL.Point(cx, cy)
+      // 使用缩略图
+      const myIcon = new BMapGL.Icon(`${imagesList.value[i].fn.replace("sceneryImage", "thumbnail")}`, new BMapGL.Size(50, 50), {
+        anchor: new BMapGL.Size(0, 50)
+      })
+      const marker = new BMapGL.Marker(point, { icon: myIcon })
+
+      const opts = {
+        width: 200,
+        height: 150,
+        title: imagesList.value[i].t
+      }
+      const infoWindow = new BMapGL.InfoWindow(`
+        拍摄者：${imagesList.value[i].per}<br/>
+        日期：${dateFilter.getTimeWithoutSpace(imagesList.value[i].sd)}<br/>
+        时间：${dateFilter.getTimeWithoutSpace(imagesList.value[i].st)}<br/>
+        地点：${imagesList.value[i].sl}<br/>
+        坐标：${imagesList.value[i].sc}
+      `, opts)
+      marker.addEventListener("click", function () {
+        myMap.value.openInfoWindow(infoWindow, point); //开启信息窗口
+      });
+
+      myMap.value.addOverlay(marker)
+    }
+  }).catch(err => {
+    console.log(err)
+  })
+}
+
+// 拼接图片路径
+const concatImagePath = (username: string, fileName: string): string => {
+  return "/image/sceneryImage/".concat(username).concat("/").concat(fileName)
+}
 </script>
 
 <style scoped="scoped">

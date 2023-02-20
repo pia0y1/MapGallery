@@ -12,11 +12,13 @@
       </div>
     </template>
   </van-skeleton>
-  <van-notice-bar
-  wrapable
-  :scrollable="false"
-  text="因浏览器原生定位失效，sdk辅助定位偏差过大，所以暂不支持定位服务，敬请谅解~😶‍🌫️"
-/>
+  <van-notice-bar wrapable :scrollable="false" text="因浏览器原生定位失效，sdk辅助定位偏差过大，所以暂不支持定位服务~😶‍🌫️" />
+  <van-divider content-position="left" :style="{ color: '#111', borderColor: '#2ce991' }">
+  </van-divider>
+  <van-notice-bar wrapable :scrollable="false" text="图片左下角即为上传时坐标" />
+  <van-divider content-position="left" :style="{ color: '#111', borderColor: '#2ce991' }">
+  </van-divider>
+  <van-notice-bar wrapable :scrollable="false" text="当前存在问题：上传图片时如果原图片过扁，则会导致地图上缩略图错误显示" />
   <van-button class="btnLogout" square block color="linear-gradient(to right, #ff6034, #ee0a24)"
     @click="logout">退出登录</van-button>
 </template>
