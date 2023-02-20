@@ -1,7 +1,11 @@
 node_modules/
 public/image/
 public/imageInfo/
-public/*.json
+public/userInfo.json
+
+*.jpg
+*.png
+*.gif
 
 # Logs
 logs
