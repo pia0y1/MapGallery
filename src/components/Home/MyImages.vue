@@ -13,9 +13,9 @@
               <template v-slot:loading>
                 <van-loading type="spinner" size="20" />
               </template>
-              <van-checkbox @click="handleClickCheckbox" v-show="showCheckBox" :name="`${img.fn}`" class="van-checkbox"
-                checked-color="#2ce991" />
             </van-image>
+            <van-checkbox @click="handleClickCheckbox" v-show="showCheckBox" :name="`${img.fn}`"
+              checked-color="#2ce991" />
           </van-grid-item>
         </van-grid>
       </div>
@@ -33,7 +33,6 @@
       上传
     </button>
   </div>
-
 
   <van-back-top class="custom" />
 
@@ -78,12 +77,13 @@ onMounted(() => {
 })
 
 const onRefresh = () => {
+  imagesList.value = []
+  getImages()
   setTimeout(() => {
     showToast('刷新成功');
     loading.value = false;
-    getImages()
-  }, 1000);
-};
+  }, 500)
+}
 
 // 拼接图片路径
 const concatImagePath = (username: string, fileName: string): string => {
@@ -104,15 +104,16 @@ const showImage = (filePath: string) => {
 const getImages = () => {
   axios.get(`/imageInfo/${user.username}.json`).then(res => {
     jsonData.value = res.data
-    // console.log(jsonData.value)
     if (jsonData.value.length == 0) {
       isEmpty.value = true
-    }
-    // 获取json文件中的图片信息并储存到数组imagesList中
-    for (let i in jsonData.value) {
-      for (let j in jsonData.value[i].imgs) {
-        let img = jsonData.value[i].imgs[j]
-        imagesList.value.push(<never>concatImagePath(user.username, img.fn))
+    } else {
+      isEmpty.value = false
+      // 获取json文件中的图片信息并储存到数组imagesList中
+      for (let i in jsonData.value) {
+        for (let j in jsonData.value[i].imgs) {
+          let img = jsonData.value[i].imgs[j]
+          imagesList.value.push(<never>concatImagePath(user.username, img.fn))
+        }
       }
     }
   }).catch(err => {
@@ -135,10 +136,14 @@ const deleteImages = () => {
     })
       .then(() => {
         // on confirm
-        console.log(checked.value)
-        axios.post("http://192.168.31.250:3000/delete")
-      })
-      .catch(() => {
+        axios.post("http://192.168.31.250:3000/delete", {
+          checkedImagesList: checked.value, username: user.username
+        }, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+      }).catch(() => {
         // on cancel
         checked.value = []
       });
@@ -153,6 +158,10 @@ const deleteImages = () => {
   padding-bottom: 50%;
 }
 
+.van-empty {
+  padding: 50% 0 0;
+}
+
 .images-date {
   line-height: 20px;
   padding-left: 5%;
@@ -161,17 +170,21 @@ const deleteImages = () => {
   width: 40%;
 }
 
-.van-checkbox {
+.van-grid-item__content {
   display: block;
-  float: right;
-  position: relative;
-  top: -20px;
+}
+
+.van-checkbox {
+  width: 20px;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  transform: translateY(-100%);
 }
 
 .van-checkbox__icon {
-  border: none;
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.4)
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .btn-group {
