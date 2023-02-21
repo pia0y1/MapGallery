@@ -1,7 +1,5 @@
 node_modules/
-public/image/
-public/imageInfo/
-public/userInfo.json
+public/
 
 *.jpg
 *.png
