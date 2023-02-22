@@ -4,7 +4,9 @@ import multer from "multer"
 import fs from "fs"
 import path from "path"
 import { json } from "body-parser"
+import cryptPwd from "../utils/pwd"
 import imageProcessing from "../utils/sharp"
+
 
 interface ImageType {
   t: string
@@ -15,10 +17,6 @@ interface ImageType {
   sdt: string
   sl: string
   sc: string
-}
-interface ImagesBatch {
-  sd: string,
-  imgs: Array<ImageType>
 }
 
 const app = express();
@@ -144,6 +142,58 @@ app.post("/delete", (req, res) => {
       resolve()
     })
   }
+})
+
+/**
+ * 要注册的东西有：
+ * 1. 账号、加密密码储存在userInfo.json中
+ * 2. 创建该角色储存照片的文件夹：public/image/sceneryImage/xxxxx
+ * 3. 创建该角色储存缩略图的文件夹：public/image/thumbnail/xxxxx
+ * 4. 在 public/imageInfo/ 下创建该角色json文件，并加入一个空数组[]
+ */
+app.post("/register", (req, res) => {
+  const buffer: Buffer = fs.readFileSync(`public/userInfo.json`)
+  const jsonData: Array<any> = JSON.parse(buffer.toString())
+
+  const user = req.body
+  const hashPassword = cryptPwd.pwdEncryption(user.password)
+  user.hashPassword = hashPassword
+  delete user.password // 删除未加密密码键值对
+
+  if (!fs.existsSync(`public/image/sceneryImage/${user.username}`)) {
+    fs.mkdirSync(`public/image/sceneryImage/${user.username}`)
+  }
+  if (!fs.existsSync(`public/image/thumbnail/${user.username}`)) {
+    fs.mkdirSync(`public/image/thumbnail/${user.username}`)
+  }
+  if (!fs.existsSync(`public/imageInfo/${user.username}.json`)) {
+    fs.writeFileSync(`public/imageInfo/${user.username}.json`, "[]")
+  }
+  if (!jsonData.some(u => u.username === user.username)) {
+    jsonData.push(user)
+    fs.writeFileSync(`public/userInfo.json`, JSON.stringify(jsonData))
+    res.send("注册成功")
+  } else {
+    res.send("该用户已存在")
+  }
+})
+
+app.post("/changeMyPwd", (req, res) => {
+  const buffer: Buffer = fs.readFileSync(`public/userInfo.json`)
+  const jsonData: Array<any> = JSON.parse(buffer.toString())
+
+  const user = req.body
+  const hashPassword = cryptPwd.pwdEncryption(user.password)
+  user.hashPassword = hashPassword
+  delete user.password // 删除未加密密码键值对
+
+  jsonData.some(u => {
+    if (u.username === user.username) {
+      u.hashPassword = user.hashPassword
+    }
+  })
+  fs.writeFileSync(`public/userInfo.json`, JSON.stringify(jsonData))
+  res.send("修改成功")
 })
 
 app.listen(3000, "192.168.31.250", () => {

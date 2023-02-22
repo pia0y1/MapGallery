@@ -8,9 +8,9 @@
       </van-field>
       <van-field v-model="t" name="t" label="标题" placeholder="请输入标题" :rules="[{ required: true, message: '输入照片标题' }]" />
       <van-field v-model="sl" is-link readonly name="sl" label="城市" placeholder="点击选择城市"
-        @click="showArea = !showArea, showMap = false" :rules="[{ required: true, message: '输选择城市' }]" />
+        @click="showArea = !showArea, showMap = false" :rules="[{ required: true, message: '请选择城市' }]" />
       <van-field v-model="sc" is-link readonly name="sc" label="位置" placeholder="点击地图选择位置"
-        @click="showMap = !showMap, showArea = false" :rules="[{ required: true, message: '输选择位置' }]" />
+        @click="showMap = !showMap, showArea = false" :rules="[{ required: true, message: '请选择位置' }]" />
     </van-cell-group>
     <Transition name="map-view">
       <div class="map-view-container" v-if="showMap">

@@ -18,6 +18,8 @@ declare module '@vue/runtime-core' {
     MyImage: typeof import('./src/components/Home/MyImage.vue')['default']
     MyImages: typeof import('./src/components/Home/MyImages.vue')['default']
     MyInfo: typeof import('./src/components/Home/MyInfo.vue')['default']
+    NotFound: typeof import('./src/components/NotFound.vue')['default']
+    Register: typeof import('./src/components/Register.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     UploadImage: typeof import('./src/components/Home/UploadImage.vue')['default']

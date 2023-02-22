@@ -11,6 +11,10 @@ export default createRouter({
     name: "Login",
     component: () => import("../components/Login.vue")
   }, {
+    path: "/register",
+    name: "Register",
+    component: () => import("../components/Register.vue")
+  }, {
     path: "/homePage",
     name: "HomePage",
     component: () => import("../components/Home/HomeMenu.vue"),
@@ -27,6 +31,10 @@ export default createRouter({
       name: "MyInfo",
       component: () => import("../components/Home/MyInfo.vue")
     }]
+  }, {
+    path: "/:catchAll(.*)",
+    name: "NotFound",
+    component: () => import("../components/NotFound.vue")
   }]
 });
 

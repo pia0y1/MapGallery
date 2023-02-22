@@ -20,15 +20,18 @@
         </van-grid>
       </div>
     </van-checkbox-group>
-
   </van-pull-refresh>
+
+  <van-image-preview closeable v-model:show="showPreview" :images="imagesList" :start-position=startIndex show-index
+    max-zoom="10">
+  </van-image-preview>
 
   <div class="btn-group">
     <button @click="deleteImages()" class="btn-group-delete" square block
       color="linear-gradient(to right, #59EF94, #66FF99)">
       删除
     </button>
-    <button @click="show = true" class="btn-group-upload" square block
+    <button @click="showUpload = true" class="btn-group-upload" square block
       color="linear-gradient(to right, #59EF94, #66FF99)">
       上传
     </button>
@@ -37,11 +40,11 @@
   <van-back-top class="custom" />
 
   <Transition name="upload-mask">
-    <div class="mask" v-show="show">
+    <div class="mask" v-show="showUpload">
       <div class="mask-popup">
-        <UploadImage @show-upload-mask="s => show = s" />
+        <UploadImage @show-upload-mask="s => showUpload = s" />
         <van-button class="mask-popup-btn" square block size="normal" color="#ff6034"
-          @click="show = false">取消</van-button>
+          @click="showUpload = false">取消</van-button>
       </div>
     </div>
   </Transition>
@@ -51,20 +54,22 @@
 import { ref, onMounted } from "vue"
 import UploadImage from "./UploadImage.vue"
 import axios from "axios"
-import { showConfirmDialog, showImagePreview, showToast } from 'vant';
+import { showConfirmDialog, showSuccessToast, showToast } from 'vant';
 import { useUserStore } from "../../store"
 import dateFilter from "../../utils/date";
 import 'vant/es/dialog/style';
 
-const isEmpty = ref(false)
+const user = useUserStore()
+const isEmpty = ref(false) // 空相册
 let jsonData = ref<any>([]) // json文件里的原始数据
 let imagesList = ref<any>([]) // json文件数据展开得到的所有照片信息
-const user = useUserStore()
-const loading = ref(false)
-const show = ref(false)
+const loading = ref(false) // 下拉刷新
+const showPreview = ref(false) // 图片预览组件显示
+const startIndex = ref(0) // 图片预览的序号
+const showUpload = ref(false) // 上传组件
 
-const showCheckBox = ref(false)
-const checked = ref([])
+const showCheckBox = ref(false) // 复选框
+const checked = ref([]) // 选中的图片
 
 // 阻止事件冒泡
 const handleClickCheckbox = (e: Event) => {
@@ -91,14 +96,8 @@ const concatImagePath = (username: string, fileName: string): string => {
 }
 
 const showImage = (filePath: string) => {
-  const startIndex = imagesList.value.indexOf(filePath)
-  showImagePreview({
-    images: imagesList.value,
-    closeable: true,
-    // showIndex: false,
-    startPosition: startIndex,
-    maxZoom: 10
-  })
+  showPreview.value = true
+  startIndex.value = imagesList.value.indexOf(filePath)
 }
 
 const getImages = () => {
@@ -117,7 +116,6 @@ const getImages = () => {
       }
     }
   }).catch(err => {
-    console.log(err)
     isEmpty.value = true
   })
 }
@@ -126,27 +124,30 @@ const getImages = () => {
  * 要删除的东西有：
  * 1. 原始图片
  * 2. 缩略图
- * 3. json文件对应的图片
+ * 3. json文件中该图片信息
  */
 const deleteImages = () => {
   if (checked.value.length === 0) showCheckBox.value = !showCheckBox.value
   else {
     showConfirmDialog({
-      title: "确认删除？"
-    })
-      .then(() => {
-        // on confirm
-        axios.post("http://192.168.31.250:3000/delete", {
-          checkedImagesList: checked.value, username: user.username
-        }, {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
-      }).catch(() => {
-        // on cancel
-        checked.value = []
-      });
+      confirmButtonColor: "#2ce991",
+      title: "确认删除？",
+      message: "删除后不可恢复"
+    }).then(() => {
+      // on confirm
+      axios.post("http://192.168.31.250:3000/delete", {
+        checkedImagesList: checked.value, username: user.username
+      }, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(() => {
+        showSuccessToast("删除成功")
+      })
+    }).catch(() => {
+      // on cancel
+      checked.value = []
+    });
   }
 }
 

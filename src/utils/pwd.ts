@@ -1,7 +1,7 @@
 import md5 from "md5"
 
-const salt1: string = "senery"
-const salt2: string = "share"
+const salt1: string = "map"
+const salt2: string = "gallery"
 
 const cryptPwd = {
   pwdEncryption(pwd: string) {
