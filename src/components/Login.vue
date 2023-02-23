@@ -34,7 +34,7 @@ interface User {
 }
 
 onMounted(() => {
-  axios.get("/userInfo.json").then(res => {
+  axios.get("http://60.205.206.45:3000/getUsersList").then(res => {
     userList = res.data
   })
 })

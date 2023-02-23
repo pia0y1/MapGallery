@@ -8,6 +8,9 @@
     <van-divider content-position="left" :style="{ color: '#111', borderColor: '#2ce991' }">
     </van-divider>
     <van-notice-bar wrapable :scrollable="false" text="图片左下角所指即为该照片绑定坐标" />
+    <van-divider content-position="left" :style="{ color: '#111', borderColor: '#2ce991' }">
+    </van-divider>
+    <van-notice-bar wrapable :scrollable="false" text="上传或删除图片后需手动刷新浏览器，地图上的标记才能生效" />
     <van-button class="btnLogout" square block color="linear-gradient(to right, #ff6034, #ee0a24)" @click="logout"
       to="/login">退出登录</van-button>
   </div>
@@ -45,7 +48,7 @@ const password2 = ref("")
 
 const onSubmit = () => {
   if (password2.value === password1.value) {
-    axios.post("http://192.168.31.250:3000/changeMyPwd", {
+    axios.post("http://60.205.206.45:3000/changeMyPwd", {
       username: user.username, password: password1.value
     }, {
       headers: { "Content-Type": "application/json" }

@@ -30,7 +30,9 @@ onMounted(() => {
 })
 
 const setImagesMarker = () => {
-  axios.get(`/imageInfo/${user.username}.json`).then(res => {
+  axios.get("http://60.205.206.45:3000/getUserImagesInfo", {
+    params: { username: user.username }
+  }).then(res => {
     jsonData.value = res.data
     for (let i in jsonData.value) {
       for (let j in jsonData.value[i].imgs) {
@@ -78,7 +80,7 @@ const setImagesMarker = () => {
 
 // 拼接图片路径
 const concatImagePath = (username: string, fileName: string): string => {
-  return "/image/sceneryImage/".concat(username).concat("/").concat(fileName)
+  return "http://60.205.206.45:3000/image/sceneryImage/".concat(username).concat("/").concat(fileName)
 }
 </script>
 
