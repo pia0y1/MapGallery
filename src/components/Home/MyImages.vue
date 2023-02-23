@@ -92,7 +92,7 @@ const onRefresh = () => {
 
 // 拼接图片路径
 const concatImagePath = (username: string, fileName: string): string => {
-  return "http://60.205.206.45:3000/image/sceneryImage/".concat(username).concat("/").concat(fileName)
+  return "http://xxx.xxx.xxx.xxx:3000/image/sceneryImage/".concat(username).concat("/").concat(fileName)
 }
 
 const showImage = (filePath: string) => {
@@ -101,7 +101,7 @@ const showImage = (filePath: string) => {
 }
 
 const getImages = () => {
-  axios.get("http://60.205.206.45:3000/getUserImagesInfo", {
+  axios.get("http://xxx.xxx.xxx.xxx:3000/getUserImagesInfo", {
     params: { username: user.username }
   }).then(res => {
     jsonData.value = res.data
@@ -137,7 +137,7 @@ const deleteImages = () => {
       message: "删除后不可恢复"
     }).then(() => {
       // on confirm
-      axios.post("http://60.205.206.45:3000/delete", {
+      axios.post("http://xxx.xxx.xxx.xxx:3000/delete", {
         checkedImagesList: checked.value, username: user.username
       }, {
         headers: {

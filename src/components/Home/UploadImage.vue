@@ -96,7 +96,7 @@ const onSubmit = () => { // 上传按钮上传操作
   }))
   formData.append("image", file.value[0].file, sdt.value.concat(suffix))
 
-  axios.post("http://60.205.206.45:3000/upload", formData)
+  axios.post("http://xxx.xxx.xxx.xxx:3000/upload", formData)
     .then(response => {
       showSuccessToast(response.data)
       setTimeout(() => {

@@ -48,7 +48,7 @@ const password2 = ref("")
 
 const onSubmit = () => {
   if (password2.value === password1.value) {
-    axios.post("http://60.205.206.45:3000/changeMyPwd", {
+    axios.post("http://xxx.xxx.xxx.xxx:3000/changeMyPwd", {
       username: user.username, password: password1.value
     }, {
       headers: { "Content-Type": "application/json" }

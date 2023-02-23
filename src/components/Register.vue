@@ -38,7 +38,7 @@ onMounted(() => {
 })
 
 const getAllUserInfo = () => {
-  axios.get("http://60.205.206.45:3000/getUsersList").then(res => {
+  axios.get("http://xxx.xxx.xxx.xxx:3000/getUsersList").then(res => {
     userList = res.data
   })
 }
@@ -53,7 +53,7 @@ const onSubmit = () => {
     password1.value = ""
     password2.value = ""
   } else {
-    axios.post("http://60.205.206.45:3000/register", {
+    axios.post("http://xxx.xxx.xxx.xxx:3000/register", {
       username: username.value, password: password1.value
     }, {
       headers: { "Content-Type": "application/json" }
